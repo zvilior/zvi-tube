@@ -21,10 +21,10 @@ function Register() {
       password: passsword
     })
       .then((response) => {
-        console.log("res:", response.data);
-        DataContext.setName(response.data.token.name)
-        localStorage.token = response.data.token.token;
-        if (response.data.token.token) {
+        console.log("res:", response);
+        DataContext.setName(first_name)
+        localStorage.token = response.data;
+        if (response.data) {
           navigate("/zvitube")
         }
       });

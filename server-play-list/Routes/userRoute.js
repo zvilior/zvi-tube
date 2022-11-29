@@ -27,8 +27,8 @@ router.post('/register', async (req, res) => {
     try {
         console.log(req.body);
         const newUser = await userLogic.register(req.body)
-        console.log("new user:", newUser);
-        res.send("register")
+        console.log("token:", newUser);
+        res.send(newUser)
     } catch (err) {
         console.log(err, "register error");
     }

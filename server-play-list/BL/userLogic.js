@@ -50,7 +50,7 @@ module.exports.register = async (userFields)=> {
   if (existUser)
    throw ({ code: 405, message: "duplicated email" })
    
-userController.create(userFields)
+// userController.create(userFields)
   // const salt= await bcrypt.genSalt();
   // const hashedPassword=await bcrypt.hash(password, salt);
   // userFields.salt=salt;
@@ -58,8 +58,10 @@ userController.create(userFields)
 
 
 
-  // const user = await userController.create(userFields)
-  // const token = jwtFn.createToken(user._id)
+  const user = await userController.create(userFields)
+  console.log("user:", user);
+  const token = jwtFn.createToken(user._id)
+  console.log("token1:", token);
   return token
 }
 

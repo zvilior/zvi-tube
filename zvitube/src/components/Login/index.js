@@ -11,7 +11,6 @@ function Login() {
     const email = e.target.elements.email.value;
     const passsword = e.target.elements.password.value;
 
-    // console.log(email, typeof (email), typeof (passsword), passsword);
     axios.post('http://localhost:3005/api/users/login', {
       email: email,
       password: passsword
@@ -40,6 +39,9 @@ function Login() {
     setIsInput2Valid(e.target.value);
     setIsDisabled(!e.target.value || !isInputValid);
   };
+  const toRegister = () => {
+    navigate("/register")
+  };
   const navigate = useNavigate()
 
   return (
@@ -57,7 +59,10 @@ function Login() {
         {isInput2Valid && <span>✅</span>}
       </div>
       <br />
-      <button disabled={isDisabled}>Login</button>
+      <div >
+        <button className={styles.btn1} disabled={isDisabled}>Login</button>
+        <button disabled={!isDisabled} onClick={toRegister} > Register </button>
+      </div>
     </form>
   );
 }
