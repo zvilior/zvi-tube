@@ -43,15 +43,17 @@ const userSchema = new mongoose.Schema({
         default: Date.now
     },
 
-    salt: {
+    // salt: {
+    //     type: String,
+    //     required: true,
+    //     select: false
+    // },
+    // hashed
+
+    Password: {
         type: String,
-        required: true,
-        select: false
-    },
-    hashedPassword: {
-        type: String,
-        required: true,
-        select: false
+        // required: true,
+        // select: true
     },
 
 

@@ -2,20 +2,20 @@ const userController = require('../DL/controllers/userController')
 const jwtFn = require('../middlewere/jwt')
 const bcrypt = require('bcrypt')
 
-// async function login(loginData){
-//   const password = loginData.password;
-//   const email = loginData.email;
-//   const user = await userController.readOne({email: email}, "+password")
-// if (!user) throw({code:401, message:"not exist"})
-// if (user.password !== password) throw({code:401, message:"unauthorized"})
-// const token = jwtFn.createToken(user._id)
-// return {token:token, name:user.firstName}
-// }
+async function login(loginData){
+  // const password = loginData.password;
+  const email = loginData.email;
+  const user = await userController.readOne({email: email})
+if (!user) throw({code:401, message:"not exist"})
+if (user.email !== email) throw({code:401, message:"unauthorized"})
+const token = jwtFn.createToken(user._id)
+return {token:token, name:user.firstName}
+}
 //TODO: hash password 
 
-// module.exports = {login}
+module.exports = {login}
 
-exports.getAllUsers = async() => {
+module.exports.getAllUsers = async() => {
     const users = await userController.read({});
     if(users.length===0) throw ({code:400, message:"there is no users"})
 
@@ -40,27 +40,7 @@ exports.updateUser = (filter,newData) => {
 //       userController.create(userFields)
 // }
 
-
-
-
-
-
-exports.login = async (loginData)=> {
-  const password = loginData.password;
-  const email = loginData.email;
-  const user = await userController.readOne({ email: email }, "+hashedPassword +salt");
-  console.log("---------------", user,"----------------");
-  if (!user) throw ({ code: 401, message: "user doesn't exist" });
-  console.log("---------------","salt " ,user.salt,"----------------");
-  const hashedPassword=await bcrypt.hash(password, user.salt); 
-  console.log("-----------user hashedPassword----", user.hashedPassword,"----------------");
-  if (user.hashedPassword !== hashedPassword) throw ({ code: 401, message: " unauthorized 2nd" });
-  const token = jwtFn.createToken(user._id)
-  return token
-}
-
-
-exports.register = async (userFields)=> {
+module.exports.register = async (userFields)=> {
   const { email, password, firstName, lastName } = userFields
 
   if (!email || !password || !firstName || !lastName)
@@ -69,16 +49,17 @@ exports.register = async (userFields)=> {
   const existUser = await userController.readOne({ email })
   if (existUser)
    throw ({ code: 405, message: "duplicated email" })
+   
+userController.create(userFields)
+  // const salt= await bcrypt.genSalt();
+  // const hashedPassword=await bcrypt.hash(password, salt);
+  // userFields.salt=salt;
+  // userFields.hashedPassword=hashedPassword;
 
-  const salt= await bcrypt.genSalt();
-  const hashedPassword=await bcrypt.hash(password, salt);
-  userFields.salt=salt;
-  userFields.hashedPassword=hashedPassword;
 
 
-
-  const user = await userController.create(userFields)
-  const token = jwtFn.createToken(user._id)
+  // const user = await userController.create(userFields)
+  // const token = jwtFn.createToken(user._id)
   return token
 }
 

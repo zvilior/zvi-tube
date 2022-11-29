@@ -17,6 +17,7 @@ function Login() {
       password: passsword
     })
       .then((response) => {
+        console.log("res:", response.data);
         DataContext.setName(response.data.token.name)
         localStorage.token = response.data.token.token;
         if (response.data.token.token) {

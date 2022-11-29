@@ -7,7 +7,10 @@ const connect = async () => {
     try {
         await mongoose.connect(MONGO_URL, { useNewUrlParser: true },
             (err) => {
-                if (err) { throw err }
+                if (err) {
+                    console.log("baasa shel hasmahot");
+                    throw err
+                }
 
                 console.log('conection success, state:', mongoose.connection.readyState);
 
